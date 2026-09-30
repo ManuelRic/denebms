@@ -10,8 +10,20 @@
     <script>document.documentElement.classList.add('js');</script>
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body class="is-loading">
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+    <div class="page-loader" data-loader aria-hidden="true">
+      <div class="page-loader-inner">
+        <div class="loader-logo" data-loader-logo>
+          <img class="loader-blade loader-blade-one" src="assets/deneb-symbol.png" alt="" width="132" height="132" />
+          <img class="loader-blade loader-blade-two" src="assets/deneb-symbol.png" alt="" width="132" height="132" />
+          <img class="loader-blade loader-blade-three" src="assets/deneb-symbol.png" alt="" width="132" height="132" />
+          <span class="loader-impact" aria-hidden="true"></span>
+        </div>
+        <p>Deneb <span>Machinery Services</span></p>
+      </div>
+    </div>
 
     <header class="site-header" data-header>
       <div class="header-wrap">
