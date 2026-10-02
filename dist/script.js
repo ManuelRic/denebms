@@ -1,27 +1,38 @@
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const pageLoader = document.querySelector('[data-loader]');
 const loaderLogo = document.querySelector('[data-loader-logo]');
+const loadingStatus = document.querySelector('[data-loading-status]');
+const loadingContent = pageLoader ? [...document.querySelectorAll('body > header, body > main, body > footer')] : [];
 let loaderStartedAt = performance.now();
 let loaderReleased = false;
 let loaderPrepared = false;
 let pageLoaded = document.readyState === 'complete';
 
+loadingContent.forEach((element) => { element.inert = true; });
+if (pageLoader) {
+  document.querySelector('main')?.setAttribute('aria-busy', 'true');
+  if (loadingStatus) loadingStatus.textContent = 'Cargando la página…';
+}
+
 function releaseLoader() {
   if (loaderReleased) return;
   loaderReleased = true;
   document.body.classList.remove('is-loading');
+  loadingContent.forEach((element) => { element.inert = false; });
+  document.querySelector('main')?.removeAttribute('aria-busy');
+  if (loadingStatus) loadingStatus.textContent = '';
   pageLoader?.classList.add('is-leaving');
-  window.setTimeout(() => pageLoader?.remove(), reduceMotion ? 180 : 850);
+  window.setTimeout(() => pageLoader?.remove(), reduceMotion ? 180 : 650);
 }
 
 function scheduleLoaderRelease() {
-  const minimumDuration = reduceMotion ? 0 : 1750;
+  const minimumDuration = reduceMotion || !pageLoader ? 0 : 2050;
   const elapsed = performance.now() - loaderStartedAt;
   window.setTimeout(releaseLoader, Math.max(0, minimumDuration - elapsed));
 }
 
 function startLoaderAnimation(separated = false) {
-  if (loaderPrepared) return;
+  if (loaderPrepared || loaderReleased) return;
   loaderPrepared = true;
   loaderStartedAt = performance.now();
   loaderLogo?.classList.toggle('is-separated', separated);
@@ -37,7 +48,6 @@ function separateLoaderPieces() {
 
   const source = new Image();
   source.decoding = 'async';
-  source.src = 'assets/deneb-symbol.png';
 
   source.addEventListener('load', async () => {
     try {
@@ -123,6 +133,7 @@ function separateLoaderPieces() {
   }, { once: true });
 
   source.addEventListener('error', () => startLoaderAnimation(), { once: true });
+  source.src = loaderLogo.querySelector('.loader-symbol').getAttribute('src');
 }
 
 separateLoaderPieces();
@@ -134,6 +145,28 @@ if (!pageLoaded) {
   }, { once: true });
 }
 window.setTimeout(releaseLoader, 4500);
+
+document.querySelectorAll('[data-loading-image]').forEach((figure) => {
+  const image = figure.querySelector('img');
+  if (!image) return;
+
+  const finishImageLoading = () => {
+    figure.classList.remove('image-pending');
+    figure.removeAttribute('aria-busy');
+  };
+  const revealImage = async () => {
+    try { await image.decode(); } catch { /* Reveal the image or its alternative text. */ }
+    finishImageLoading();
+  };
+
+  figure.setAttribute('aria-busy', 'true');
+  image.addEventListener('load', revealImage, { once: true });
+  image.addEventListener('error', finishImageLoading, { once: true });
+  if (image.complete) {
+    if (image.naturalWidth) revealImage();
+    else finishImageLoading();
+  }
+});
 
 const menuButton = document.querySelector('[data-menu-toggle]');
 const nav = document.querySelector('[data-nav]');
@@ -170,8 +203,11 @@ function stagger(selector, step = 70) {
 }
 
 stagger('.credentials [data-reveal]', 80);
-stagger('.service-list [data-reveal]', 55);
-stagger('.fieldwork-grid [data-reveal]', 90);
+document.querySelectorAll('.service-grid, .maintenance-grid').forEach((grid) => {
+  grid.querySelectorAll('[data-reveal]').forEach((element, index) => {
+    element.style.setProperty('--reveal-delay', `${(index % 2) * 70}ms`);
+  });
+});
 stagger('.contact [data-reveal]', 100);
 
 const revealElements = document.querySelectorAll('[data-reveal]');

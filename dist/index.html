@@ -7,6 +7,7 @@
     <meta name="theme-color" content="#ffffff" />
     <title>Deneb Machinery Services | Diagnóstico industrial</title>
     <link rel="icon" type="image/png" href="assets/deneb-symbol.png" />
+    <link rel="preload" as="image" href="assets/deneb-symbol.png" />
     <script>document.documentElement.classList.add('js');</script>
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -14,8 +15,24 @@
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
     <div class="page-loader" data-loader aria-hidden="true">
+      <div class="loader-skeleton">
+        <div class="skeleton-header">
+          <div class="skeleton-brand"><span class="skeleton-block skeleton-symbol"></span><span class="skeleton-block skeleton-wordmark"></span></div>
+          <div class="skeleton-nav"><span class="skeleton-block"></span><span class="skeleton-block"></span><span class="skeleton-block"></span></div>
+        </div>
+        <div class="skeleton-hero">
+          <div class="skeleton-copy">
+            <span class="skeleton-block skeleton-eyebrow"></span>
+            <div class="skeleton-heading"><span class="skeleton-block"></span><span class="skeleton-block"></span><span class="skeleton-block"></span></div>
+            <div class="skeleton-paragraph"><span class="skeleton-block"></span><span class="skeleton-block"></span></div>
+            <span class="skeleton-block skeleton-button"></span>
+          </div>
+          <div class="skeleton-block skeleton-image"></div>
+        </div>
+      </div>
       <div class="page-loader-inner">
         <div class="loader-logo" data-loader-logo>
+          <img class="loader-symbol" src="assets/deneb-symbol.png" alt="" width="132" height="132" />
           <img class="loader-blade loader-blade-one" src="assets/deneb-symbol.png" alt="" width="132" height="132" />
           <img class="loader-blade loader-blade-two" src="assets/deneb-symbol.png" alt="" width="132" height="132" />
           <img class="loader-blade loader-blade-three" src="assets/deneb-symbol.png" alt="" width="132" height="132" />
@@ -24,6 +41,8 @@
         <p>Deneb <span>Machinery Services</span></p>
       </div>
     </div>
+
+    <p class="sr-only" role="status" data-loading-status></p>
 
     <header class="site-header" data-header>
       <div class="header-wrap">
@@ -36,7 +55,7 @@
         </button>
         <nav class="site-nav" id="site-nav" aria-label="Navegación principal" data-nav>
           <a href="#servicios">Servicios</a>
-          <a href="#trabajo">Trabajo</a>
+          <a href="#trabajo">Mediciones</a>
           <a href="#empresa">Empresa</a>
           <a class="header-cta" href="#contacto">Contacto</a>
         </nav>
@@ -47,15 +66,15 @@
       <section class="hero" id="inicio">
         <div class="hero-copy">
           <p class="eyebrow" data-hero>Ingeniería de mantenimiento · Valencia</p>
-          <h1 data-hero>Diagnóstico preciso para maquinaria industrial.</h1>
+          <h1 data-hero><span class="hero-title-accent">Diagnóstico preciso</span> para maquinaria industrial.</h1>
           <p class="hero-intro" data-hero>Detectamos el origen de los problemas mecánicos y definimos la intervención necesaria con datos fiables.</p>
           <div class="hero-actions" data-hero>
             <a class="button" href="#contacto">Solicitar diagnóstico</a>
             <a class="email-link" href="mailto:lorenzosoler@denebms.com">lorenzosoler@denebms.com</a>
           </div>
         </div>
-        <figure class="hero-image" data-hero-image>
-          <img src="assets/deneb-en-accion-logo-fixed.png" alt="Técnico de Deneb inspeccionando maquinaria industrial" />
+        <figure class="hero-image image-pending" data-hero-image data-loading-image>
+          <img src="assets/deneb-en-accion-logo-fixed.png" alt="Técnico de Deneb inspeccionando maquinaria industrial" fetchpriority="high" decoding="async" />
         </figure>
       </section>
 
@@ -67,64 +86,59 @@
 
       <section class="services page-section" id="servicios" aria-labelledby="services-title">
         <div class="section-heading" data-reveal>
-          <p class="eyebrow">Servicios</p>
-          <h2 id="services-title">Capacidad técnica centrada en el problema.</h2>
-          <p>Desde el diagnóstico inicial hasta la corrección y verificación final, trabajamos sobre la causa del fallo y su impacto en la producción.</p>
+          <p class="eyebrow">Capacidad técnica</p>
+          <h2 id="services-title">Servicios para tu maquinaria.</h2>
+          <p>Medición, corrección y seguimiento de maquinaria, en planta o en taller.</p>
         </div>
 
-        <div class="services-layout">
-          <div class="service-list">
-            <article data-reveal>
-              <span>01</span>
-              <div><h3>Análisis de vibraciones</h3><p>Diagnóstico de desequilibrios, holguras, resonancias y defectos en rodamientos o engranajes mediante espectros, formas de onda y tendencias.</p></div>
+        <div class="service-group" aria-labelledby="machinery-services-title">
+          <h3 class="service-group-title" id="machinery-services-title">Diagnóstico y corrección</h3>
+          <div class="service-grid service-grid-three">
+            <article class="service-card" data-reveal>
+              <figure class="service-photo image-pending" data-loading-image><img src="assets/analisis-vibraciones-hd-clean.png" alt="Sensor de vibración instalado sobre maquinaria industrial" loading="lazy" decoding="async" /></figure>
+              <div class="service-card-copy"><h4>Análisis de vibraciones</h4><p>Identificación de fallos mecánicos mediante mediciones y seguimiento de tendencias.</p></div>
             </article>
-            <article data-reveal>
-              <span>02</span>
-              <div><h3>Alineación láser</h3><p>Alineación de ejes acoplados, ejes con espaciador, configuraciones verticales y transmisiones especiales.</p></div>
+            <article class="service-card" data-reveal>
+              <figure class="service-photo image-pending" data-loading-image><img src="assets/alineacion-laser-hd-v2.png" alt="Equipo láser para alinear ejes de maquinaria" loading="lazy" decoding="async" /></figure>
+              <div class="service-card-copy"><h4>Alineación láser de ejes</h4><p>Corrección de la alineación en equipos horizontales, verticales y acoplamientos especiales.</p></div>
             </article>
-            <article data-reveal>
-              <span>03</span>
-              <div><h3>Equilibrado de rotores</h3><p>Equilibrado dinámico en uno o dos planos, realizado in situ o en taller según el equipo y sus condiciones de operación.</p></div>
-            </article>
-            <article data-reveal>
-              <span>04</span>
-              <div><h3>Metrología industrial</h3><p>Concentricidad, planitud, nivelación, geometría, posicionamiento y comprobaciones con tecnología láser.</p></div>
-            </article>
-            <article data-reveal>
-              <span>05</span>
-              <div><h3>Mantenimiento predictivo</h3><p>Planes de inspección, criticidad de activos y seguimiento de condición para anticipar fallos y priorizar intervenciones.</p></div>
+            <article class="service-card" data-reveal>
+              <figure class="service-photo service-photo-rotor image-pending" data-loading-image><img src="assets/equilibrado-dinamico.jpeg" alt="Rotor instrumentado para equilibrado dinámico en taller" loading="lazy" decoding="async" /></figure>
+              <div class="service-card-copy"><h4>Equilibrado de rotores</h4><p>Corrección del desequilibrio en uno o dos planos, en planta o taller.</p></div>
             </article>
           </div>
-
-          <figure class="services-image" data-reveal>
-            <img src="assets/alineacion-laser-hd-ai.png" alt="Equipo de alineación láser instalado sobre maquinaria" loading="lazy" />
-            <figcaption>Alineación láser en campo</figcaption>
-          </figure>
         </div>
-      </section>
 
-      <section class="fieldwork page-section" id="trabajo" aria-labelledby="fieldwork-title">
-        <div class="section-heading section-heading-row" data-reveal>
-          <div>
-            <p class="eyebrow">Trabajo de campo</p>
-            <h2 id="fieldwork-title">Medir donde trabaja la máquina.</h2>
+        <div class="service-group" id="trabajo" aria-labelledby="measurement-services-title">
+          <h3 class="service-group-title" id="measurement-services-title">Alineación y medición especializada</h3>
+          <div class="service-grid">
+            <article class="service-card" data-reveal>
+              <figure class="service-photo image-pending" data-loading-image><img src="assets/alineacion-cardan-original.jpg" alt="Instrumentos láser colocados en los extremos de un eje cardan" loading="lazy" decoding="async" /></figure>
+              <div class="service-card-copy"><h4>Alineación de ejes cardan</h4><p>Ajuste de transmisiones cardan sin desmontar el eje ni realizar maniobras complejas.</p></div>
+            </article>
+            <article class="service-card" data-reveal>
+              <figure class="service-photo image-pending" data-loading-image><img src="assets/concentricidad-laser-original.jpg" alt="Medición de concentricidad sobre un conjunto mecánico" loading="lazy" decoding="async" /></figure>
+              <div class="service-card-copy"><h4>Concentricidad láser</h4><p>Comprobación de centros y ejes de rotación en conjuntos mecánicos.</p></div>
+            </article>
+            <article class="service-card" data-reveal>
+              <figure class="service-photo image-pending" data-loading-image><img src="assets/mediciones-geometricas-original.jpg" alt="Láser tracker realizando mediciones en una instalación industrial" loading="lazy" decoding="async" /></figure>
+              <div class="service-card-copy"><h4>Mediciones geométricas</h4><p>Control de planitud, nivelación y posicionamiento mediante tecnología láser tracker.</p></div>
+            </article>
+            <article class="service-card" data-reveal>
+              <figure class="service-photo image-pending" data-loading-image><img src="assets/medicion-ruido-original.jpg" alt="Sonómetro midiendo ruido en una máquina en servicio" loading="lazy" decoding="async" /></figure>
+              <div class="service-card-copy"><h4>Medición de ruido</h4><p>Evaluación del ruido ambiental de las instalaciones mediante sonómetro.</p></div>
+            </article>
           </div>
-          <p>Las condiciones reales de operación importan. Por eso combinamos instrumentación específica, conocimiento mecánico y observación directa del equipo.</p>
         </div>
 
-        <div class="fieldwork-grid">
-          <figure class="fieldwork-main" data-reveal>
-            <img src="assets/concentricidad-laser-hd-ai.png" alt="Medición láser de concentricidad en una instalación industrial" loading="lazy" />
-            <figcaption><strong>Concentricidad láser</strong><span>Control geométrico de conjuntos mecánicos</span></figcaption>
-          </figure>
-          <figure data-reveal>
-            <img src="assets/mediciones-geometricas-hd-ai.png" alt="Equipo láser realizando mediciones geométricas" loading="lazy" />
-            <figcaption><strong>Mediciones geométricas</strong><span>Verificación precisa en planta</span></figcaption>
-          </figure>
-          <figure data-reveal>
-            <img src="assets/medicion-ruido-hd-ai.png" alt="Medición de ruido sobre maquinaria industrial" loading="lazy" />
-            <figcaption><strong>Ruido industrial</strong><span>Evaluación sobre el equipo en servicio</span></figcaption>
-          </figure>
+        <div class="service-group service-plans" aria-labelledby="maintenance-services-title">
+          <h3 class="service-group-title" id="maintenance-services-title">Planificación y seguimiento</h3>
+          <div class="maintenance-grid">
+            <article data-reveal><h4>Planes de mantenimiento predictivo</h4><p>Priorización de activos, tecnologías de monitorización y frecuencias de inspección.</p></article>
+            <article data-reveal><h4>Digitalización de inspecciones visuales</h4><p>Configuración de inspecciones con aplicaciones móviles y formación del equipo.</p></article>
+            <article data-reveal><h4>Lubricación basada en la condición</h4><p>Programas de lubricación guiados por mediciones de ultrasonido o vibración.</p></article>
+            <article data-reveal><h4>Optimización de seguros de maquinaria</h4><p>Documentación del mantenimiento predictivo para apoyar la revisión de tarifas.</p></article>
+          </div>
         </div>
       </section>
 
