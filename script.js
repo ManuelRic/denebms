@@ -26,7 +26,8 @@ function releaseLoader() {
 }
 
 function scheduleLoaderRelease() {
-  const minimumDuration = reduceMotion || !pageLoader ? 0 : 2050;
+  // Three sequential impacts, the existing spin, then a brief hold.
+  const minimumDuration = reduceMotion || !pageLoader ? 0 : 3200;
   const elapsed = performance.now() - loaderStartedAt;
   window.setTimeout(releaseLoader, Math.max(0, minimumDuration - elapsed));
 }
@@ -144,7 +145,7 @@ if (!pageLoaded) {
     if (loaderPrepared) scheduleLoaderRelease();
   }, { once: true });
 }
-window.setTimeout(releaseLoader, 4500);
+window.setTimeout(releaseLoader, 6500);
 
 document.querySelectorAll('[data-loading-image]').forEach((figure) => {
   const image = figure.querySelector('img');
