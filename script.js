@@ -147,33 +147,12 @@ if (!pageLoaded) {
 }
 window.setTimeout(releaseLoader, 6500);
 
-document.querySelectorAll('[data-loading-image]').forEach((figure) => {
-  const image = figure.querySelector('img');
-  if (!image) return;
-
-  const finishImageLoading = () => {
-    figure.classList.remove('image-pending');
-    figure.removeAttribute('aria-busy');
-  };
-  const revealImage = async () => {
-    try { await image.decode(); } catch { /* Reveal the image or its alternative text. */ }
-    finishImageLoading();
-  };
-
-  figure.setAttribute('aria-busy', 'true');
-  image.addEventListener('load', revealImage, { once: true });
-  image.addEventListener('error', finishImageLoading, { once: true });
-  if (image.complete) {
-    if (image.naturalWidth) revealImage();
-    else finishImageLoading();
-  }
-});
-
 const menuButton = document.querySelector('[data-menu-toggle]');
 const nav = document.querySelector('[data-nav]');
 
 function closeMenu() {
   menuButton?.setAttribute('aria-expanded', 'false');
+  if (menuButton) menuButton.querySelector('.sr-only').textContent = 'Abrir menú';
   nav?.classList.remove('open');
   document.body.classList.remove('menu-open');
 }
@@ -181,6 +160,7 @@ function closeMenu() {
 menuButton?.addEventListener('click', () => {
   const open = menuButton.getAttribute('aria-expanded') !== 'true';
   menuButton.setAttribute('aria-expanded', String(open));
+  menuButton.querySelector('.sr-only').textContent = open ? 'Cerrar menú' : 'Abrir menú';
   nav?.classList.toggle('open', open);
   document.body.classList.toggle('menu-open', open);
 });
@@ -196,6 +176,56 @@ const header = document.querySelector('[data-header]');
 const updateHeader = () => header?.classList.toggle('scrolled', window.scrollY > 16);
 updateHeader();
 window.addEventListener('scroll', updateHeader, { passive: true });
+
+const services = {
+  vibraciones: { image: 'analisis-vibraciones.jpg', alt: 'Sensor de vibración instalado sobre maquinaria industrial', category: 'Detectar el origen', title: 'Escuchar lo que la máquina te dice.', description: 'Identificamos fallos mecánicos mediante mediciones de vibración y seguimiento de tendencias, para orientar la intervención con datos.' },
+  alineacion: { image: 'alineacion-laser-original.jpeg', alt: 'Instrumentos láser instalados en un acoplamiento de maquinaria', category: 'Corregir con precisión', title: 'Cada eje, en su posición.', description: 'Corregimos la alineación de equipos horizontales, verticales y acoplamientos especiales mediante tecnología láser.' },
+  equilibrado: { image: 'equilibrado-dinamico.jpeg', alt: 'Rotor instrumentado para equilibrado dinámico en taller', category: 'Recuperar el equilibrio', title: 'El movimiento empieza en el equilibrio.', description: 'Corregimos el desequilibrio de rotores en uno o dos planos, con intervención en planta o en taller.' },
+  cardan: { image: 'alineacion-cardan-original.jpg', alt: 'Instrumentos láser colocados en los extremos de un eje cardan', category: 'Ajustar la transmisión', title: 'Alinear sin desmontar el eje.', description: 'Ajustamos transmisiones cardan sin desmontar el eje ni realizar maniobras complejas, mediante medición y alineación especializada.' },
+  concentricidad: { image: 'concentricidad-laser-original.jpg', alt: 'Medición de concentricidad sobre un conjunto mecánico industrial', category: 'Comprobar la geometría', title: 'Un mismo centro. Un giro preciso.', description: 'Comprobamos los centros y los ejes de rotación de conjuntos mecánicos mediante medición de concentricidad láser.' },
+  geometria: { image: 'mediciones-geometricas-original.jpg', alt: 'Láser tracker realizando mediciones en una instalación industrial', category: 'Medir en el espacio', title: 'La geometría también cuenta.', description: 'Controlamos la planitud, la nivelación y el posicionamiento de equipos mediante tecnología láser tracker.' },
+  ruido: { image: 'medicion-ruido-original.jpg', alt: 'Sonómetro midiendo el ruido de un motor industrial en servicio', category: 'Evaluar el entorno', title: 'Medir el ruido. Entender el entorno.', description: 'Evaluamos el ruido ambiental de las instalaciones mediante sonómetro y mediciones realizadas en el entorno de trabajo.' }
+};
+const serviceTabs = [...document.querySelectorAll('[data-service]')];
+const servicePanel = document.getElementById('service-panel');
+function selectService(tab, moveFocus = false) {
+  const service = services[tab.dataset.service];
+  if (!service || !servicePanel) return;
+  serviceTabs.forEach((item) => {
+    const selected = item === tab;
+    item.classList.toggle('is-active', selected);
+    item.setAttribute('aria-selected', String(selected));
+    item.tabIndex = selected ? 0 : -1;
+  });
+  servicePanel.setAttribute('aria-labelledby', tab.id);
+  const image = servicePanel.querySelector('[data-service-image]');
+  image.src = `assets/${service.image}`;
+  image.alt = service.alt;
+  servicePanel.querySelector('[data-service-category]').textContent = service.category;
+  servicePanel.querySelector('[data-service-title]').textContent = service.title;
+  servicePanel.querySelector('[data-service-description]').textContent = service.description;
+  servicePanel.querySelector('[data-service-link]').setAttribute('aria-label', `Consultar sobre ${tab.querySelector('span:nth-child(2)').textContent.toLowerCase()}`);
+  if (moveFocus) tab.focus();
+}
+serviceTabs.forEach((tab, index) => {
+  tab.addEventListener('click', () => {
+    selectService(tab);
+    if (window.matchMedia('(max-width: 560px)').matches) {
+      servicePanel.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest' });
+    }
+  });
+  tab.addEventListener('keydown', (event) => {
+    let nextIndex;
+    if (event.key === 'ArrowDown') nextIndex = (index + 1) % serviceTabs.length;
+    else if (event.key === 'ArrowUp') nextIndex = (index - 1 + serviceTabs.length) % serviceTabs.length;
+    else if (event.key === 'Home') nextIndex = 0;
+    else if (event.key === 'End') nextIndex = serviceTabs.length - 1;
+    else return;
+    event.preventDefault();
+    selectService(serviceTabs[nextIndex], true);
+  });
+});
+window.matchMedia('(min-width: 801px)').addEventListener('change', (event) => { if (event.matches) closeMenu(); });
 
 function stagger(selector, step = 70) {
   document.querySelectorAll(selector).forEach((element, index) => {
